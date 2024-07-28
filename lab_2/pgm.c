@@ -1,5 +1,3 @@
-// Develop an operator precedence parser for a given language.
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
