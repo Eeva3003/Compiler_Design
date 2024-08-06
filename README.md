@@ -8,7 +8,7 @@
 
 ### Experiment 3:[Construct a recursive descent parser for an expression according to the grammar below.E → TE’ E’ → +TE’/- TE’/ε T → FT’ T’ → *FT’/ /FT’/ ε F → (E) / id](https://github.com/Ashil10/Compiler_Design/tree/main/lab_3)
 
-### Experiment 4:Write program to find First and Follow of any given grammar.
+### Experiment 4:[Write program to find First and Follow of any given grammar.](https://github.com/Ashil10/Compiler_Design/tree/main/lab_4)
 
 ### Experiment 5:Implement Intermediate code generation for a given set of arithmetic expressions in triple and quadruple format.
 
