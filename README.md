@@ -16,6 +16,6 @@
 
 ### Experiment 7:Optimize intermediate code by Common Subexpression Elimination of basic blocks.
 
-### Experiment 8:[Implement the back end of the compiler which takes the three-address code and produces the 8086 assembly language instructions that can be assembled.(https://github.com/Ashil10/Compiler_Design/tree/main/lab_8)
+### Experiment 8:[Implement the back end of the compiler which takes the three-address code and produces the 8086 assembly language instructions that can be assembled](https://github.com/Ashil10/Compiler_Design/tree/main/lab_8)
 
 
