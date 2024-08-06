@@ -10,8 +10,7 @@
 
 ### Experiment 4:Write program to find First and Follow of any given grammar.
 
-### Experiment 5:Implement Intermediate code generation for a given set of arithmetic expressions in triple
-and quadruple format.
+### Experiment 5:Implement Intermediate code generation for a given set of arithmetic expressions in triple and quadruple format.
 
 ### Experiment 6:Write a program to perform constant propagation.
 
