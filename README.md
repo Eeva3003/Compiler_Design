@@ -10,12 +10,12 @@
 
 ### Experiment 4:[Write program to find First and Follow of any given grammar.](https://github.com/Ashil10/Compiler_Design/tree/main/lab_4)
 
-### Experiment 5:Implement Intermediate code generation for a given set of arithmetic expressions in triple and quadruple format.
+### Experiment 5:[Implement Intermediate code generation for a given set of arithmetic expressions in triple and quadruple format](https://github.com/Ashil10/Compiler_Design/tree/main/lab_5)
 
-### Experiment 6:Write a program to perform constant propagation.
+### Experiment 6:[Write a program to perform constant propagation.](https://github.com/Ashil10/Compiler_Design/tree/main/lab_6)
 
 ### Experiment 7:Optimize intermediate code by Common Subexpression Elimination of basic blocks.
 
-### Experiment 8:Implement the back end of the compiler which takes the three-address code and produces the 8086 assembly language instructions that can be assembled.
+### Experiment 8:[Implement the back end of the compiler which takes the three-address code and produces the 8086 assembly language instructions that can be assembled.(https://github.com/Ashil10/Compiler_Design/tree/main/lab_8)
 
 
