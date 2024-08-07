@@ -31,14 +31,20 @@ int main() {
     printf("STACK\t\tInput\t\tAction");
     printf("\n$\t\t%s$\t\tshift", s);
     while (1) {
-        memset(buffer, 0, 100);  // Use memset instead of bzero
+        memset(buffer, 0, 100); 
         int flag = 0;
+        
         if (isalnum(stack[top]) && stack[top] != 'E') {
             strcpy(buffer, "reduce E->id");
             stack[top] = 'E';
-        } else if (indx == strlen(s) && (stack[top] == '+' || stack[top] == '-' || stack[top] == '*' || stack[top] == '/')) {
-            break;
-        } else if (strlen(s) == indx || (top > 1 && !isalnum(s[indx]) && isgreater(prev, s[indx]) == 1)) {
+        }
+        else if (isalnum(stack[top]) && isalnum(s[indx])){
+        	printf("\nMissing operator\n");
+          break;}
+         else if (indx == strlen(s) && (stack[top] == '+' || stack[top] == '-' || stack[top] == '*' || stack[top] == '/')) {
+            break;}
+          
+        else if (strlen(s) == indx || (top > 1 && !isalnum(s[indx]) && isgreater(prev, s[indx]) == 1)) {
             flag = 1;
             char exp[4];
             exp[0] = stack[top-2]; exp[1] = stack[top-1]; exp[2] = stack[top]; exp[3] = '\0';
@@ -65,6 +71,7 @@ int main() {
             } else {
                 flag = 0;
             }
+            
         } else if (flag == 0) {
             if (indx != strlen(s)) {
                 stack[++top] = s[indx++];
