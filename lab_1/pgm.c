@@ -5,13 +5,13 @@
 
 int isKeyword(char buffer[]) 
 {
-	char keywords[34][10] =
+	char keywords[35][10] =
 	{"auto", "break", "case", "char", "const", "continue", "default", "do", "double", "else", "enum", "extern", 
 	"float", "for", "goto","if", "int", "long", "register", "return", "short", "signed", "sizeof", "static", "struct", 
-	"switch", "typdef", "union", "unsigned", "void", "volitile", "while", "printf", "scanf"};
+	"switch", "typdef", "union", "unsigned", "void", "volatile", "while", "printf", "scanf","main"};
 	
 	int i,flag =0;
-	for(i=0;i<34;i++)
+	for(i=0;i<35;i++)
 	{
 		if(strcmp(keywords[i],buffer)==0)
 		{

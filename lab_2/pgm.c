@@ -1,98 +1,171 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+char *input;
+int i=0;
+char lasthandle[6],stack[50],handles[][7]={")E(","E*E","E+E","i","E^E","E-E","E/E"};
+//(E) becomes )E( when pushed to stack
 
-int priority(char op) {
-    if (op == '^')
-        return 3;
-    else if (op == '*' || op == '/')
-        return 2;
-    else if (op == '+' || op == '-')
-        return 1;
-    return 0;
-}
+int top=0,l;
+char prec[9][9]={
 
-int isgreater(char op1, char op2) {
-    if (priority(op1) >= priority(op2))
-        return 1;
-    else
-        return 0;
-}
+                            /*input*/
 
-int main() {
-    char s[100];
-    printf("Enter input string: ");
-    scanf("%[^\n]s", s);
-    
-    char stack[100], buffer[100], prev = 'x';
-    int indx = 0, top = -1;
-    
-    printf("STACK\t\tInput\t\tAction");
-    printf("\n$\t\t%s$\t\tshift", s);
-    while (1) {
-        memset(buffer, 0, 100); 
-        int flag = 0;
-        
-        if (isalnum(stack[top]) && stack[top] != 'E') {
-            strcpy(buffer, "reduce E->id");
-            stack[top] = 'E';
-        }
-        else if (isalnum(stack[top]) && isalnum(s[indx])){
-        	printf("\nMissing operator\n");
-          break;}
-         else if (indx == strlen(s) && (stack[top] == '+' || stack[top] == '-' || stack[top] == '*' || stack[top] == '/')) {
-            break;}
-          
-        else if (strlen(s) == indx || (top > 1 && !isalnum(s[indx]) && isgreater(prev, s[indx]) == 1)) {
-            flag = 1;
-            char exp[4];
-            exp[0] = stack[top-2]; exp[1] = stack[top-1]; exp[2] = stack[top]; exp[3] = '\0';
-            if (strcmp(exp, "E+E") == 0) {
-                stack[top] = '\0'; stack[top-1] = '\0';
-                top = top - 2;
-                strcpy(buffer, "reduce E->E+E ");
-            } else if (strcmp(exp, "E-E") == 0) {
-                stack[top] = '\0'; stack[top-1] = '\0';
-                top = top - 2;
-                strcpy(buffer, "reduce E->E-E ");
-            } else if (strcmp(exp, "E*E") == 0) {
-                stack[top] = '\0'; stack[top-1] = '\0';
-                top = top - 2;
-                strcpy(buffer, "reduce E->E*E ");
-            } else if (strcmp(exp, "E/E") == 0) {
-                stack[top] = '\0'; stack[top-1] = '\0';
-                top = top - 2;
-                strcpy(buffer, "reduce E->E/E ");
-              } else if (strcmp(exp, "E^E") == 0) {
-                stack[top] = '\0'; stack[top-1] = '\0';
-                top = top - 2;
-                strcpy(buffer, "reduce E->E^E ");
-            } else {
-                flag = 0;
-            }
-            
-        } else if (flag == 0) {
-            if (indx != strlen(s)) {
-                stack[++top] = s[indx++];
-                strcpy(buffer, "shift");
-                if (!isalnum(stack[top]))
-                    prev = stack[top];
-            } else {
-                break;
-            }
-        }
-        
-        printf("\n$%s\t\t", stack);
-        for (int j = indx; j < strlen(s); j++)
-            printf("%c", s[j]);
-        printf("$\t\t%s  ", buffer);
-        
-        if (stack[top] == 'E' && top == 0 && indx == strlen(s)) {
-            printf("\n\nINPUT ACCEPTED\n\n");
-            exit(0);
-        }
+            /*stack    +    -   *   /   ^   i   (   )   $  */
+
+            /*  + */  '>', '>','<','<','<','<','<','>','>',
+
+            /*  - */  '>', '>','<','<','<','<','<','>','>',
+
+            /*  * */  '>', '>','>','>','<','<','<','>','>',
+
+            /*  / */  '>', '>','>','>','<','<','<','>','>',
+
+            /*  ^ */  '>', '>','>','>','<','<','<','>','>',
+
+            /*  i */  '>', '>','>','>','>','e','e','>','>',
+
+            /*  ( */  '<', '<','<','<','<','<','<','>','e',
+
+            /*  ) */  '>', '>','>','>','>','e','e','>','>',
+
+            /*  $ */  '<', '<','<','<','<','<','<','<','>',
+
+                };
+
+int getindex(char c)
+{
+switch(c)
+    {
+    case '+':return 0;
+    case '-':return 1;
+    case '*':return 2;
+    case '/':return 3;
+    case '^':return 4;
+    case 'i':return 5;
+    case '(':return 6;
+    case ')':return 7;
+    case '$':return 8;
     }
-    printf("\n\nINPUT REJECTED\n\n");
-    return 0;
 }
+
+
+int shift()
+{
+stack[++top]=*(input+i++);
+stack[top+1]='\0';
+}
+
+
+int reduce()
+{
+int i,len,found,t;
+for(i=0;i<7;i++)//selecting handles
+    {
+    len=strlen(handles[i]);
+    if(stack[top]==handles[i][0]&&top+1>=len)
+        {
+        found=1;
+        for(t=0;t<len;t++)
+            {
+            if(stack[top-t]!=handles[i][t])
+                {
+                found=0;
+                break;
+                }
+            }
+        if(found==1)
+            {
+            stack[top-t+1]='E';
+            top=top-t+1;
+            strcpy(lasthandle,handles[i]);
+            stack[top+1]='\0';
+            return 1;//successful reduction
+            }
+        }
+   }
+return 0;
+}
+
+
+
+void dispstack()
+{
+int j;
+for(j=0;j<=top;j++)
+    printf("%c",stack[j]);
+}
+
+
+
+void dispinput()
+{
+int j;
+for(j=i;j<l;j++)
+    printf("%c",*(input+j));
+}
+
+
+
+void main()
+{
+int j;
+
+input=(char*)malloc(50*sizeof(char));
+printf("\nEnter the string\n");
+scanf("%s",input);
+input=strcat(input,"$");
+l=strlen(input);
+strcpy(stack,"$");
+printf("\nSTACK\tINPUT\tACTION");
+while(i<=l)
+	{
+	shift();
+	printf("\n");
+	dispstack();
+	printf("\t");
+	dispinput();
+	printf("\tShift");
+	if(prec[getindex(stack[top])][getindex(input[i])]=='>')
+		{
+		while(reduce())
+			{
+			printf("\n");
+			dispstack();
+			printf("\t");
+			dispinput();
+			printf("\tReduced: E->%s",lasthandle);
+			}
+		}
+	}
+
+if(strcmp(stack,"$E$")==0)
+    printf("\nAccepted;");
+else
+    printf("\nNot Accepted;");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
