@@ -7,9 +7,10 @@ void follow(char c);
 void findfirst(char, int, int);
 
 int count, n = 0,m = 0,k,e,p1 = 0, p2, tmp;
-char firstmat[10][100],followmat[10][100], production[10][10],f[10], first[10],ck;
+char firstmat[10][100],followmat[10][100], production[10][10],f[10], first[10];
 
 int main(int argc, char ** argv) {
+	char ck;
 	int jm = 0;
 	int km = 0;
 	int i, choice;
@@ -185,4 +186,3 @@ void followfirst(char c, int c1, int c2) {
 		}
 	}
 }
-
