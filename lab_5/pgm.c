@@ -32,7 +32,7 @@ void postfix(){
 			post[j++] = s[i];
 		}
 		else if(precedence(s[i])){
-			while(precedence(stack[top]) > precedence(s[i])){
+			while(precedence(stack[top]) >= precedence(s[i])){
 				post[j++] = stack[top--];
 			}
 			top++;
@@ -56,21 +56,21 @@ void main(){
 	int i = 0;
 	char ind = '1';
 	
-	FILE *fp,*fp1,*fp2;
+	FILE *fp,*fp1,*fp2,*fp3;
 	fp = fopen( "3addr.txt","w");
 	fp1 = fopen( "quadraple.txt","w");
 	fp2 = fopen( "triple.txt","w");
 	fprintf(fp,"Three Address\n");
 	fprintf(fp1,"Quadruple\nOP\tO1\tO2\tRES\n");
 	fprintf(fp2,"Triple\nIN\tOP\tO1\tO2\n");
-	
+	fp3=fopen( "input.txt","r");
 	printf("Input the string: ");
-	scanf("%s", s);
 	
 	postfix();
-	
+	while((fscanf(fp3,"%s",s))!=EOF)
+	{
+	postfix();
 	printf("Infix : %s \nPostfix : %s\n", s, post);
-
 	while(post[i] != '\0'){
 		if(precedence(post[i])){
 			char a = queue[front--];
@@ -101,5 +101,6 @@ void main(){
 			queue[front] = post[i];
 		}
 		i++;
+	}
 	}
 }
