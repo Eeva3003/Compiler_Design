@@ -14,7 +14,7 @@
 
 ### Experiment 6:[Write a program to perform constant propagation.](https://github.com/Ashil10/Compiler_Design/tree/cycle1/lab_6)
 
-### Experiment 7:Optimize intermediate code by Common Subexpression Elimination of basic blocks.
+### Experiment 7:[Optimize intermediate code by Common Subexpression Elimination of basic blocks](https://github.com/Ashil10/Compiler_Design/tree/cycle1/lab_7)
 
 ### Experiment 8:[Implement the back end of the compiler which takes the three-address code and produces the 8086 assembly language instructions that can be assembled](https://github.com/Ashil10/Compiler_Design/tree/cycle1/lab_8)
 
