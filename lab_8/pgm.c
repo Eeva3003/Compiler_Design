@@ -48,9 +48,7 @@ void main()
     	    fprintf(fp2,"MOV AX,[%s]\n", fir);
     	    if(strlen(sec)==2)
     	    {	
-    	    	if (sec[1]=='1')+ a b t1
-+ c d t2
-/ t1 t2 t3
+    	    	if (sec[1]=='1')
     	    		fprintf(fp2,"MOV BX,CH\n");
     	    	else if (sec[1]=='2')
     	    		fprintf(fp2,"MOV BX,CL\n");
