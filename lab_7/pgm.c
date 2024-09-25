@@ -1,111 +1,97 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<ctype.h>
+#include <stdio.h>
+#include <string.h>
 
-char s[100], post[100], stack[100], queue[100];
-int top = -1, j = 0;
+#define MAX_QUADS 100
 
-// Function to check precedence of operators
-int precedence(char c) {
-    if (c == '+' || c == '-') {
+// Define structure to hold quadruples
+typedef struct {
+    char op[3];  // Operator
+    char o1[5];  // Operand 1
+    char o2[5];  // Operand 2
+    char res[5]; // Result
+} Quadruple;
+
+// Function to check if a common subexpression exists
+int is_common_subexpression(Quadruple q[], int index, char res[]) {
+    for (int i = 0; i < index; i++) {
+        // Check if the current operation and operands match any previous quadruple
+        if (strcmp(q[i].op, q[index].op) == 0 && strcmp(q[i].o1, q[index].o1) == 0 && strcmp(q[i].o2, q[index].o2) == 0) {
+            strcpy(res, q[i].res);  // Copy the result of the common subexpression
+            return 1;  // Found a common subexpression
+        }
+    }
+    return 0;  // No common subexpression found
+}
+
+// Function to replace all occurrences of a redundant result in subsequent quadruples
+void replace_redundant_result(Quadruple q[], int n, const char *old_res, const char *new_res) {
+    for (int i = 0; i < n; i++) {
+        if (strcmp(q[i].o1, old_res) == 0) {
+            strcpy(q[i].o1, new_res);  // Replace operand1
+        }
+        if (strcmp(q[i].o2, old_res) == 0) {
+            strcpy(q[i].o2, new_res);  // Replace operand2
+        }
+    }
+}
+
+int main() {
+    FILE *inputFile, *outputFile;
+
+    // Open input file for reading
+    inputFile = fopen("quadraple.txt", "r");
+    if (inputFile == NULL) {
+        printf("Error opening input file!\n");
         return 1;
-    } else if (c == '*' || c == '/') {
-        return 2;
-    } else if (c == '^') {
-        return 3;
-    } else {
-        return 0;
     }
-}
 
-// Function to convert infix to postfix notation
-void postfix() {
-    int i = 0;
-    top = -1;  // Reset stack
-    j = 0;     // Reset postfix index
-
-    while (s[i] != '\0') {
-        if (s[i] == '(') {
-            stack[++top] = s[i];
-        } else if (isalpha(s[i])) {
-            post[j++] = s[i];
-        } else if (precedence(s[i])) {
-            while (top != -1 && precedence(stack[top]) >= precedence(s[i])) {
-                post[j++] = stack[top--];
-            }
-            stack[++top] = s[i];
-        } else if (s[i] == ')') {
-            while (top != -1 && stack[top] != '(') {
-                post[j++] = stack[top--];
-            }
-            top--;  // Remove '(' from stack
-        }
-        i++;
+    // Open output file for writing
+    outputFile = fopen("output.txt", "w");
+    if (outputFile == NULL) {
+        printf("Error opening output file!\n");
+        fclose(inputFile);
+        return 1;
     }
-    while (top != -1) {
-        post[j++] = stack[top--];
+
+    Quadruple q[MAX_QUADS];
+    int n = 0;
+
+    // Read the quadruples from the input file
+    char header[100];
+    fgets(header, sizeof(header), inputFile);  // Read and skip the first line (header)
+
+    // Reading the quadruple tuples from the file
+    while (fscanf(inputFile, "%s %s %s %s", q[n].op, q[n].o1, q[n].o2, q[n].res) == 4) {
+        n++;
     }
-    post[j] = '\0';  // Null-terminate the postfix expression
-}
 
-// Function to process the postfix expression and generate three-address, quadruple, and triple code
-void processExpression(FILE* fp, FILE* fp1, FILE* fp2) {
-    int i = 0;
-    char ind = '1';  // Temporary variable index
-    int front = -1;  // Queue front pointer, reset for each expression
+    fclose(inputFile);
 
-    while (post[i] != '\0') {
-        if (precedence(post[i])) {  // Operator
-            char a = queue[front--];  // Pop operands from queue
-            char b = queue[front--];
-            fprintf(fp, "t%c = %c %c %c\n", ind, b, post[i], a);
-            fprintf(fp1, "%c\t%c\t%c\tt%c\n", post[i], b, a, ind);
-            fprintf(fp2, "%c\t%c\t%c\t%c\n", ind, post[i], b, a);
+    // Perform common subexpression elimination
+    Quadruple result[MAX_QUADS];
+    int result_count = 0;
 
-            queue[++front] = ind++;  // Push result back onto the queue
+    for (int i = 0; i < n; i++) {
+        char common_res[5];
+        if (is_common_subexpression(q, i, common_res)) {
+            // If a common subexpression is found, replace its result in the quadruples
+            replace_redundant_result(q, n, q[i].res, common_res);
         } else {
-            queue[++front] = post[i];  // Operand: push to the queue
+            // Add the current quadruple to the result array
+            result[result_count++] = q[i];
         }
-        i++;
     }
+
+    // Write the optimized quadruples to output file (single header)
+    fprintf(outputFile, "OP\tO1\tO2\tRES\n");  // Print the header once
+    for (int i = 0; i < result_count; i++) {
+        fprintf(outputFile, "%s\t%s\t%s\t%s\n", result[i].op, result[i].o1, result[i].o2, result[i].res);
+    }
+
+    fclose(outputFile);
+
+    printf("Common subexpression elimination completed. Optimized output written to 'output.txt'.\n");
+
+    return 0;
 }
 
-void main() {
-    FILE *fp, *fp1, *fp2, *fp3;
-
-    // Open files
-    fp = fopen("3addr.txt", "w");
-    fp1 = fopen("quadraple.txt", "w");
-    fp2 = fopen("triple.txt", "w");
-    fp3 = fopen("input.txt", "r");
-
-    if (fp == NULL || fp1 == NULL || fp2 == NULL || fp3 == NULL) {
-        printf("Error opening file.\n");
-        exit(1);
-    }
-
-    // Write headers to the output files
-    fprintf(fp, "Three Address\n");
-    fprintf(fp1, "Quadruple\nOP\tO1\tO2\tRES\n");
-    fprintf(fp2, "Triple\nIN\tOP\tO1\tO2\n");
-
-    // Read each infix expression from input.txt
-    while (fgets(s, sizeof(s), fp3)) {  // Read entire lines (expressions)
-        s[strcspn(s, "\n")] = '\0';  // Remove newline character
-        printf("Infix : %s\n", s);
-        
-        // Convert to postfix
-        postfix();
-        printf("Postfix : %s\n", post);
-        
-        // Process the postfix expression and generate code
-        processExpression(fp, fp1, fp2);
-    }
-
-    // Close the files
-    fclose(fp);
-    fclose(fp1);
-    fclose(fp2);
-    fclose(fp3);
-}
