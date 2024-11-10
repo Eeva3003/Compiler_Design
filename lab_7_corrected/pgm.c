@@ -22,7 +22,7 @@ struct Expression {
 If an expression with the same operator and operands (rhs1, rhs2) is found, it returns the index of the first occurrence of this common subexpression.
 If no such expression is found, it returns -1.*/
 int findCommonSubexpression(struct Expression exp[], int n, struct Expression current) {
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {// n is count of expression till now 
         if (strcmp(exp[i].op, current.op) == 0 &&
             strcmp(exp[i].rhs1, current.rhs1) == 0 &&
             strcmp(exp[i].rhs2, current.rhs2) == 0) {
@@ -37,7 +37,7 @@ int findCommonSubexpression(struct Expression exp[], int n, struct Expression cu
 It searches all other expressions and replaces any reference to the eliminated lhs in the operands (rhs1 and rhs2*/
 void replaceOccurrences(struct Expression exp[], int n, const char *oldVar, const char *newVar) {
     for (int i = 0; i < n; i++) {
-        if (strcmp(exp[i].rhs1, oldVar) == 0) {
+        if (strcmp(exp[i].rhs1, oldVar) == 0) {// if its same as old change ot new
             strcpy(exp[i].rhs1, newVar);
         }
         if (strcmp(exp[i].rhs2, oldVar) == 0) {
@@ -52,7 +52,7 @@ replaced by the previously computed result of the common subexpression.
 The function uses findCommonSubexpression() to detect duplicates and replaceOccurrences() to substitute lhs values in subsequent expressions.
 The process ensures that the common subexpression is computed only once.*/
 void eliminateCommonSubexpressions(struct Expression exp[], int *n) {
-    for (int i = 0; i < *n; i++) {
+    for (int i = 0; i < *n; i++) { // note there is star n 
         int index = findCommonSubexpression(exp, i, exp[i]);
         if (index != -1) {
             // Print what the common subexpression is
