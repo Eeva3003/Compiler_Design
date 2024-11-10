@@ -8,7 +8,7 @@ int word_count = 0;
 
 %%
 [ \t\n]+            ; // Ignore whitespace
-[a-zA-Z]+          { word_count++; char_count += yyleng; }
+[a-zA-Z]+          { word_count++; char_count += yyleng; }//yyleng is a special variable in Lex/Flex that holds the length of the matched string (yytext
 .                  { char_count++; } // Count any single character
 
 %% 
@@ -33,6 +33,8 @@ int main(int argc, char **argv) {
     printf("Character Count: %d\n", char_count);
     return 0;
 }
+
+//yywrap() is a standard function used in Flex to indicate that the input stream has been fully processed. When Flex finishes reading the input, yywrap() is called.
 
 int yywrap() {
     return 1;
