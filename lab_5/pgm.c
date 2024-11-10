@@ -66,21 +66,21 @@ void main(){
 	fp3=fopen( "input.txt","r");
 	printf("Input the string: ");
 	
-	postfix();
+	postfix(); /*not needed i guess*/
 	while((fscanf(fp3,"%s",s))!=EOF)
 	{
 	postfix();
 	printf("Infix : %s \nPostfix : %s\n", s, post);
 	while(post[i] != '\0'){
 		if(precedence(post[i])){
-			char a = queue[front--];
+			char a = queue[front--];/*retrieve two most recent operands from stack to queue*/
 			char b = queue[front--];
 			if(isdigit(a) && isdigit(b)){
-				fprintf(fp,"t%c = t%c %c t%c\n", ind, b, post[i], a);
+				fprintf(fp,"t%c = t%c %c t%c\n", ind, b, post[i], a); /*fp=3 address code, fp1=quadruple. if they are digits then write as t3, t2 etc */
 				fprintf(fp1,"%c\tt%c\tt%c\tt%c\n", post[i], b, a, ind);
 			}
 			else if(isdigit(b)){
-				fprintf(fp,"t%c = t%c %c %c\n", ind, b, post[i], a);
+				fprintf(fp,"t%c = t%c %c %c\n", ind, b, post[i], a);/*if not digit directly write the variable name*/
 				fprintf(fp1,"%c\tt%c\t%c\tt%c\n", post[i], b, a, ind);
 			}
 			else if(isdigit(a)){
@@ -91,9 +91,9 @@ void main(){
 				fprintf(fp,"t%c = %c %c %c\n", ind, b, post[i], a);
 				fprintf(fp1,"%c\t%c\t%c\tt%c\n", post[i], b, a, ind);
 			}
-			fprintf(fp2,"%c\t%c\t%c\t%c\n", ind, post[i], b, a);
+			fprintf(fp2,"%c\t%c\t%c\t%c\n", ind, post[i], b, a);/*in triple you always write the number or variable name same as a and b */
 			front++;
-			queue[front] = ind;
+			queue[front] = ind;/*ind is used to create unique temporary variable like t1 , t2 , t3*/
 			ind++;
 		}
 		else{
