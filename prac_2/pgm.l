@@ -39,3 +39,38 @@ int main(int argc, char **argv) {
 int yywrap() {
     return 1;
 }
+
+
+
+
+
+//Normal function 
+%{
+#include <stdio.h>
+
+int char_count = 0;
+int word_count = 0;
+%}
+
+%%
+
+[ \t\n]+            ; // Ignore whitespace
+[a-zA-Z]+           { word_count++; char_count += yyleng; } // Count words and characters
+.                   { char_count++; } // Count any single character
+
+%% 
+
+int main() {
+    printf("Enter text (Ctrl+D to end input):\n");
+    yylex(); // Directly process standard input
+
+    printf("Word Count: %d\n", word_count);
+    printf("Character Count: %d\n", char_count);
+    return 0;
+}
+
+// The yywrap() function tells Flex that the input has ended
+int yywrap() {
+    return 1;
+}
+
