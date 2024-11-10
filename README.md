@@ -19,3 +19,13 @@
 ### Experiment 8:[Implement the back end of the compiler which takes the three-address code and produces the 8086 assembly language instructions that can be assembled](https://github.com/Ashil10/Compiler_Design/tree/cycle1/lab_8)
 
 
+Experiment 9:Write program to find ε-closure of all states of any given NFA with ε transition
+Experiment 10:Write program to convert ε-NFA to DFA
+Experiment 11:Implementation of Lexical Analyzer using Lex Tool to recognize tokens such as identifiers, keywords, operators
+Experiment 12:Implementation of simple calculator using YACC that performs +, –, * and / arithmetic operation
+Practice 1:Lex Program to display the number of words and characters
+Practice 2:Lex Program to Convert a Substring abc to ABC from a given input string
+Practice 3:Lex Program to find out total number of vowels and consonants from a given input string
+Practice 4:Write program to minimize any given DFA
+Practice 5:Write a program to convert Epsilon NFA to NFA without Epsilon
+
