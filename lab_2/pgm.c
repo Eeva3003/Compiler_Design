@@ -42,10 +42,10 @@ switch(c)
     case '*':return 2;
     case '/':return 3;
     case '^':return 4;
-    case 'i':return 5;
+    case 'i':return 5;//identifier
     case '(':return 6;
     case ')':return 7;
-    case '$':return 8;
+    case '$':return 8;//end of stack symbol
     }
 }
 
@@ -101,8 +101,8 @@ for(j=0;j<=top;j++)
 void dispinput()
 {
 int j;
-for(j=i;j<l;j++)
-    printf("%c",*(input+j));
+for(j=i;j<l;j++)//from i to l (length of input)
+    printf("%c",*(input+j));\\also printing input +j
 }
 
 
@@ -111,35 +111,36 @@ void main()
 {
 int j;
 
-input=(char*)malloc(50*sizeof(char));
+input=(char*)malloc(50*sizeof(char));//use of malloc to dynamically alloacte memory
 printf("\nEnter the string\n");
 scanf("%s",input);
-input=strcat(input,"$");
+input=strcat(input,"$");//appending the end of string
 l=strlen(input);
-strcpy(stack,"$");
+strcpy(stack,"$");//appending the end of stack(since the $ symbol is in precedance graph it is of atmost importance)
 printf("\nSTACK\tINPUT\tACTION");
 while(i<=l)
 	{
-	shift();
+	shift();//the first operation is shifting
 	printf("\n");
-	dispstack();
+	dispstack();//then display the stack after each shift
 	printf("\t");
-	dispinput();
+	dispinput();//display input
 	printf("\tShift");
-	if(prec[getindex(stack[top])][getindex(input[i])]=='>')
-		{
+	if(prec[getindex(stack[top])][getindex(input[i])]=='>')// here get the prec of element at the top of stack(stack[top]) to that of current input(input[i]), if it is '>'
+		//'>' means reduce and '< 'means shift
+	{
 		while(reduce())
 			{
 			printf("\n");
 			dispstack();
 			printf("\t");
 			dispinput();
-			printf("\tReduced: E->%s",lasthandle);
+			printf("\tReduced: E->%s",lasthandle);// also print handle used for reduction
 			}
 		}
 	}
 
-if(strcmp(stack,"$E$")==0)
+if(strcmp(stack,"$E$")==0)//if the end of stack is a E symbpl then string is accepted else not
     printf("\nAccepted;");
 else
     printf("\nNot Accepted;");
