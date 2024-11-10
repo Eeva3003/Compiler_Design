@@ -10,7 +10,7 @@ rel <=|<|>=|>
 key int|void|char|if|main|printf
 %%
 {lite} {printf("%s\t%i\tInteger\n",yytext,no);}
-{lite2} { char aa[10],bb[10];
+{lite2} { char aa[10],bb[10];//removes the double quotes
 	strcpy(aa,yytext);
 	for(int i=1;i<strlen(aa)-1;i++){
 		bb[i-1]=aa[i];
