@@ -61,6 +61,9 @@ int main(int argc, char ** argv) {// to read no. of arg and string arg
 		p1++;
 	}
 	printf("\n\n\n");
+
+
+	//Follow printing
 	char donee[count];
 	ptr = -1;
 	for (k = 0; k < count; k++) {
@@ -137,30 +140,31 @@ void follow(char c) {
 	}
 }
 
-
+//q1-this is the index of the production rule being analyzed. It refers to which production of a non-terminal is currently being processed.
+//q2-This is the index within the current production (production[q1]) that refers to the symbol being analyzed.navigate right hand side
 
 void findfirst(char c, int q1, int q2) {
 	int j;
 	if (!(isupper(c))) 
-		first[n++] = c;	
-	for (j = 0; j < count; j++) {
-		if(production[j][0] == production[j][2])
+		first[n++] = c;	// if c is not a non terminal add c to the first set 
+	for (j = 0; j < count; j++) {// iterate through production rules
+		if(production[j][0] == production[j][2])// skip if it is of left recursion form 
 			continue;	
 		
-		if (production[j][0] == c) {
-			if (production[j][2] == '#') 
+		if (production[j][0] == c) {// if the current  production starts with c
+			if (production[j][2] == '#') // check if it has a epsilon production
 			{
-				if (production[q1][q2] == '\0')
-				  first[n++] = '#';
+				if (production[q1][q2] == '\0')//production[q1][q2] == '\0' checks whether the current character in the production string is the null terminator ('\0'), which marks the end of the string.
+				  first[n++] = '#';// add epsilon to first set 
 				else if (production[q1][q2] != '\0' && (q1 != 0 || q2 != 0))
-					findfirst(production[q1][q2], q1,(q2 + 1));
+					findfirst(production[q1][q2], q1,(q2 + 1));//Recursively find the FIRST set of the next symbol.
 				else
-					first[n++] = '#';
+					first[n++] = '#';//If no further symbols, add epsilon.
 			} 
 			else if (!isupper(production[j][2])) 
-				first[n++] = production[j][2];
+				first[n++] = production[j][2];// if it is a terminal symbol directly add the terminal 
 			else 
-				findfirst(production[j][2], j, 3);
+				findfirst(production[j][2], j, 3);// if non terminal again find its first 
 		}
 	}
 }
