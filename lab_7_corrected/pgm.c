@@ -4,6 +4,12 @@
 
 #define MAX_EXPRESSIONS 100
 
+/*
+findCommonSubexpression(struct Expression exp[], int n, struct Expression current)
+replaceOccurrences(struct Expression exp[], int n, const char *oldVar, const char *newVar)
+eliminateCommonSubexpressions(struct Expression exp[], int *n)
+*/
+
 // Structure to represent an expression in three-address code
 struct Expression {
     char lhs[10];  // Left-hand side variable (e.g., t1, t2)
@@ -12,7 +18,9 @@ struct Expression {
     char rhs2[10]; // Second operand (can be a variable or another temporary)
 };
 
-// Function to find the index of a common subexpression
+/*This function checks if a given expression current (from the list of expressions) is a duplicate of any earlier expression.
+If an expression with the same operator and operands (rhs1, rhs2) is found, it returns the index of the first occurrence of this common subexpression.
+If no such expression is found, it returns -1.*/
 int findCommonSubexpression(struct Expression exp[], int n, struct Expression current) {
     for (int i = 0; i < n; i++) {
         if (strcmp(exp[i].op, current.op) == 0 &&
@@ -24,7 +32,9 @@ int findCommonSubexpression(struct Expression exp[], int n, struct Expression cu
     return -1; // No common subexpression found
 }
 
-// Function to replace occurrences of the eliminated expression
+/*After identifying and eliminating a common subexpression, this function replaces occurrences of the eliminated expression
+(using its left-hand side variable) with the previously found common subexpression's result (lhs).
+It searches all other expressions and replaces any reference to the eliminated lhs in the operands (rhs1 and rhs2*/
 void replaceOccurrences(struct Expression exp[], int n, const char *oldVar, const char *newVar) {
     for (int i = 0; i < n; i++) {
         if (strcmp(exp[i].rhs1, oldVar) == 0) {
@@ -36,7 +46,11 @@ void replaceOccurrences(struct Expression exp[], int n, const char *oldVar, cons
     }
 }
 
-// Function to eliminate common subexpressions
+/*This is the main function that loops through the list of expressions, and for each expression, it tries to find a duplicate (common subexpression) earlier in the list.
+If a common subexpression is found, it eliminates the duplicate by removing it from the list, and the lhs of the duplicate is 
+replaced by the previously computed result of the common subexpression.
+The function uses findCommonSubexpression() to detect duplicates and replaceOccurrences() to substitute lhs values in subsequent expressions.
+The process ensures that the common subexpression is computed only once.*/
 void eliminateCommonSubexpressions(struct Expression exp[], int *n) {
     for (int i = 0; i < *n; i++) {
         int index = findCommonSubexpression(exp, i, exp[i]);
