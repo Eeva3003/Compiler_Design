@@ -6,10 +6,10 @@ void followfirst(char, int, int);
 void follow(char c);
 void findfirst(char, int, int);
 
-int count, n = 0,m = 0,k,e,p1 = 0, p2, tmp;
+int count/*no of productions*/, n = 0,m = 0,k,e,p1 = 0, p2, tmp;
 char firstmat[10][100],followmat[10][100], production[10][10],f[10], first[10],ck;
 
-int main(int argc, char ** argv) {
+int main(int argc, char ** argv) {// to read no. of arg and string arg
 	int jm = 0;
 	int km = 0;
 	int i, choice;
@@ -18,29 +18,31 @@ int main(int argc, char ** argv) {
 
 	scanf("%d", & count);
 	for (i = 0; i < count; i++)
-		scanf("%s", production[i]);
+		scanf("%s", production[i]);//productions entered as strings
 	int kay;
 	char done[count];
 	int ptr = -1; 
 	for (k = 0; k < count; k++) {
 		for (kay = 0; kay < 100; kay++) 
-			firstmat[k][kay] = '!';
+			firstmat[k][kay] = '!';//initialising the first matrix
 	}
-	int p1 = 0, p2, tmp;
-	for (k = 0; k < count; k++) {
-		c = production[k][0];
+	int p1 = 0, p2, tmp;//This is the index representing the row of the firstmat array. Each row corresponds to a non-terminal (e.g., First(E), First(T)
+	//This is the index representing the current column in the row p1. p2 is incremented after the assignment (p2++), which ensures that the next element of the FIRST set is stored in the next column.
+	for (k = 0; k < count; k++) {//iterates over each production rule
+		c = production[k][0];// c set to first left hand side non terminal of production rule
 		p2 = 0;
 		tmp = 0;
+		//This part checks if the non-terminal c has already been processed:
 		for (kay = 0; kay <= ptr; kay++)
-		if (c == done[kay])
+		if (c == done[kay])//The array done[] keeps track of non-terminals that have already been processed for their FIRST set.
 		tmp = 1;
-		if (tmp == 1)
+		if (tmp == 1)//if tmp is 1 then it exits the current iteraion
 		continue;
-		findfirst(c, 0, 0);
-		ptr += 1;
-		done[ptr] = c;
+		findfirst(c, 0, 0);//  this function will update the global first[] array with the FIRST set of c
+		ptr += 1;//ptr keeps track of length of done array
+		done[ptr] = c;// add c to done array
 		printf("\nFirst(%c) = { ", c);
-		firstmat[p1][p2++] = c;
+		firstmat[p1][p2++] = c;//?
 		for (i = 0 + jm; i < n; i++) {
 			int lark = 0, chk = 0;
 			for (lark = 0; lark < p2; lark++) {
