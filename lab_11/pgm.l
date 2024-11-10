@@ -1,7 +1,12 @@
+//header section
+
 %{
 #include <stdio.h>
 	int no=1;
 %}
+
+//rules section
+
 lite [0-9][0-9]*
 inv [0-9][a-zA-Z0-9]*
 ident [a-zA-Z][a-zA-Z0-9]*
@@ -40,6 +45,8 @@ key int|void|char|if|main|printf
 "\n" {no++;}
 . {}
 %%
+
+//main function
 int main()
 {
 	yyin=fopen("input.txt","r");
