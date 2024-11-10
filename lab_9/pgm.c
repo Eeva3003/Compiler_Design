@@ -1,13 +1,19 @@
+//there has to be a struct
+//dot function is not used
+//all function void
+//referring NFA *nfa (always in star)
+
+
 #include<stdio.h>
 #define MAX_STATES 100
 #define MAX_SYMBOLS 100
 
- typedef struct {
+ typedef struct {// dont forget typedef
 int transition[MAX_STATES][MAX_SYMBOLS][MAX_STATES];
 int epsilon[MAX_STATES][MAX_STATES];
 int numStates;
 int numSymbols;
-} NFA;
+} NFA; //This is capital nfa , later u declare small nfa with this in main 
 
 /*void addTransition(NFA *nfa, int from, int to, int symbol)
 void addEpsilonTransition(NFA *nfa, int from, int to)
@@ -15,7 +21,7 @@ void epsilonClosure(NFA *nfa, int state, int *closure, int *closureSize)
 */
 
 //This function adds a regular transition for the NFA:
-void addTransition(NFA *nfa, int from, int to, int symbol) {
+void addTransition(NFA *nfa, int from, int to, int symbol) {//include dat structure with eaxch 
 nfa->transition[from][symbol][to] = 1;
 }
 
@@ -28,7 +34,9 @@ nfa->epsilon[from][to] = 1;
 It recursively checks for any epsilon transitions from the current state to other states and includes them in the closure if not already included.
 The closure is built by exploring all epsilon transitions reachable from the state.*/
 
-void epsilonClosure(NFA *nfa, int state, int *closure, int *closureSize) {
+
+
+void epsilonClosure(NFA *nfa, int state, int *closure, int *closureSize) {// clsoure is the array storing the elemenys , closuresize is the poinetr to number of closure in the array(initially at 0)
 closure[*closureSize] = state;//adding itself into the closure array first
 (*closureSize)++;
 // Check for epsilon transitions
@@ -44,7 +52,7 @@ break;
 }
 }
 if (!alreadyInClosure) {
-epsilonClosure(nfa, i, closure, closureSize);
+epsilonClosure(nfa, i, closure, closureSize);// no * at all in calling, iteratively calling for more epsilon clousre
 }
 }
 }
@@ -55,7 +63,7 @@ int main() {
 NFA nfa;
 int epsilonClosureResult[MAX_STATES];
 printf("Enter the number of states: ");
-scanf("%d", &nfa.numStates);
+scanf("%d", &nfa.numStates);// here dot opetator is used 
 printf("Enter the number of input symbols: ");
 scanf("%d", &nfa.numSymbols);
 
@@ -82,13 +90,13 @@ printf("\t for symbol %c: ", j==nfa.numSymbols-1? 35 : j+97);
 
 int toState;
 
-while (1) {
+while (1) {// a wihle loop here
 scanf("%d", &toState);
 
 if(toState == -1) break;
 
 if(j==nfa.numSymbols-1) //checking whether epsilon transition or normal input transition
-addEpsilonTransition(&nfa, i, toState);
+addEpsilonTransition(&nfa, i, toState); // &nfa is given
 
 else
 addTransition(&nfa, i, toState, j);
@@ -97,9 +105,9 @@ addTransition(&nfa, i, toState, j);
 }
 
 for (int i = 0; i < nfa.numStates; i++) {
-int closure[MAX_STATES];
+int closure[MAX_STATES];// initialise closure and closuresizr
 int closureSize = 0;
-epsilonClosure(&nfa, i, closure, &closureSize);
+epsilonClosure(&nfa, i, closure, &closureSize);// & not used for array
 printf("Epsilon closure of state %d: { ", i);
 for (int j = 0; j < closureSize; j++) {
 printf("%d ", closure[j]);
