@@ -1,4 +1,5 @@
-//lex to convert a substring abc to ABC from a given input string
+//to count number of  consonants and vowels
+
 %{
 #include <stdio.h>
 #include <ctype.h>
